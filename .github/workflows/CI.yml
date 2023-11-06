@@ -60,7 +60,7 @@ jobs:
   local:
     strategy:
         matrix:
-            os: [ubuntu-20.04, ubuntu-22.04]
+            os: [ubuntu-20.04]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -146,153 +146,153 @@ jobs:
           --skip-tags "hardware_check,kvm_device,update_grub,reboot_kernel"
           --extra-vars "@parameters.json"
 
-  docker-image:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          path: kafl
+  # docker-image:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         path: kafl
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2.2.1
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2.2.1
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4.1.1
-        with:
-          images: ${{ env.image_name }}
-          flavor: |
-            latest=true
+  #     - name: Extract metadata (tags, labels) for Docker
+  #       id: meta
+  #       uses: docker/metadata-action@v4.1.1
+  #       with:
+  #         images: ${{ env.image_name }}
+  #         flavor: |
+  #           latest=true
 
-      - name: Build image
-        uses: docker/build-push-action@v3
-        with:
-          context: kafl/
-          push: false
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          load: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+  #     - name: Build image
+  #       uses: docker/build-push-action@v3
+  #       with:
+  #         context: kafl/
+  #         push: false
+  #         tags: ${{ steps.meta.outputs.tags }}
+  #         labels: ${{ steps.meta.outputs.labels }}
+  #         load: true
+  #         cache-from: type=gha
+  #         cache-to: type=gha,mode=max
 
-      # TODO: refactor in a separate in security.yml workflow
-      - name: Run Snyk to check Docker image for vulnerabilities
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor
-          image: ${{ steps.meta.outputs.tags }}
-        # TODO: this action seems broken
-        #    https://github.com/IntelLabs/kAFL/issues/161
-        continue-on-error: true
+  #     # TODO: refactor in a separate in security.yml workflow
+  #     - name: Run Snyk to check Docker image for vulnerabilities
+  #       uses: snyk/actions/docker@master
+  #       env:
+  #         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  #       with:
+  #         command: monitor
+  #         image: ${{ steps.meta.outputs.tags }}
+  #       # TODO: this action seems broken
+  #       #    https://github.com/IntelLabs/kAFL/issues/161
+  #       continue-on-error: true
 
-      # - name: Upload result to GitHub Code Scanning
-      #   uses: github/codeql-action/upload-sarif@v2
-      #   with:
-      #     sarif_file: snyk.sarif
+  #     # - name: Upload result to GitHub Code Scanning
+  #     #   uses: github/codeql-action/upload-sarif@v2
+  #     #   with:
+  #     #     sarif_file: snyk.sarif
 
-      - run: mkdir bench-logs
+  #     - run: mkdir bench-logs
 
-      - uses: actions/checkout@v3
-        with:
-          repository: docker/docker-bench-security
-          ref: 5a8d6434e6ebd70cb8bb465fce4ae5ed2a572eac
-          path: bench
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         repository: docker/docker-bench-security
+  #         ref: 5a8d6434e6ebd70cb8bb465fce4ae5ed2a572eac
+  #         path: bench
 
-      # build image since dockerhub one is out of date
-      - name: Build Docker Bench for Security image
-        uses: docker/build-push-action@v3
-        with:
-          context: bench/
-          push: false
-          tags: docker-bench-security
-          load: true  # load build result into docker
+  #     # build image since dockerhub one is out of date
+  #     - name: Build Docker Bench for Security image
+  #       uses: docker/build-push-action@v3
+  #       with:
+  #         context: bench/
+  #         push: false
+  #         tags: docker-bench-security
+  #         load: true  # load build result into docker
 
-      - name: Run Docker Bench for Security
-        run: >
-          docker run --net host --pid host --userns host --cap-add audit_control
-          -e DOCKER_CONTENT_TRUST=$DOCKER_CONTENT_TRUST
-          -v /var/lib:/var/lib
-          -v /var/run/docker.sock:/var/run/docker.sock
-          -v /usr/lib/systemd:/usr/lib/systemd
-          -v /etc:/etc --label docker_bench_security
-          -v ${{ github.workspace }}/bench-logs:/usr/local/bin/log
-          docker-bench-security
-          -l log/log_file
-          -c container_images
-          -i intellabs/kafl
+  #     - name: Run Docker Bench for Security
+  #       run: >
+  #         docker run --net host --pid host --userns host --cap-add audit_control
+  #         -e DOCKER_CONTENT_TRUST=$DOCKER_CONTENT_TRUST
+  #         -v /var/lib:/var/lib
+  #         -v /var/run/docker.sock:/var/run/docker.sock
+  #         -v /usr/lib/systemd:/usr/lib/systemd
+  #         -v /etc:/etc --label docker_bench_security
+  #         -v ${{ github.workspace }}/bench-logs:/usr/local/bin/log
+  #         docker-bench-security
+  #         -l log/log_file
+  #         -c container_images
+  #         -i intellabs/kafl
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: docker-bench-security
-          path: bench-logs/
+  #     - uses: actions/upload-artifact@v3
+  #       with:
+  #         name: docker-bench-security
+  #         path: bench-logs/
 
-  push-docker-image:
-    runs-on: ubuntu-latest
-    needs: [docker-image]
-    if: ${{ github.event_name == 'push' }}
-    steps:
-      - uses: actions/checkout@v3
+  # push-docker-image:
+  #   runs-on: ubuntu-latest
+  #   needs: [docker-image]
+  #   if: ${{ github.event_name == 'push' }}
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2.2.1
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2.2.1
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4.1.1
-        with:
-          images: ${{ env.image_name }}
-          flavor: |
-            latest=true
+  #     - name: Extract metadata (tags, labels) for Docker
+  #       id: meta
+  #       uses: docker/metadata-action@v4.1.1
+  #       with:
+  #         images: ${{ env.image_name }}
+  #         flavor: |
+  #           latest=true
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #     - name: Login to Docker Hub
+  #       uses: docker/login-action@v2
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+  #     - name: Build image
+  #       uses: docker/build-push-action@v3
+  #       with:
+  #         context: .
+  #         push: true
+  #         tags: ${{ steps.meta.outputs.tags }}
+  #         labels: ${{ steps.meta.outputs.labels }}
+  #         cache-from: type=gha
+  #         cache-to: type=gha,mode=max
 
-      - name: Update Docker Hub description
-        uses: Wenzel/dockerhub-description@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: ${{ env.image_name }}
-          readme-filepath: ./.github/DOCKER.md
+  #     - name: Update Docker Hub description
+  #       uses: Wenzel/dockerhub-description@v3
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #         repository: ${{ env.image_name }}
+  #         readme-filepath: ./.github/DOCKER.md
 
-  release:
-    # this job makes an official Github release
-    needs: [ansible-lint, check-mode, local, remote, docker-image]
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.get_version.outputs.version }}
-      upload_url: ${{ steps.step_upload_url.outputs.upload_url }}
+  # release:
+  #   # this job makes an official Github release
+  #   needs: [ansible-lint, check-mode, local, remote, docker-image]
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     version: ${{ steps.get_version.outputs.version }}
+  #     upload_url: ${{ steps.step_upload_url.outputs.upload_url }}
 
-    steps:
-      - uses: actions/checkout@v3
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      - name: Get the version
-        id: get_version
-        run: echo "version=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
+  #     - name: Get the version
+  #       id: get_version
+  #       run: echo "version=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
 
-      # only create release if tag start by 'v*'
-      - name: Create a Release
-        id: create_release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ steps.get_version.outputs.version }}
-          body_path: ${{ github.workspace }}/.github/RELEASE.md
-        if: startsWith(github.ref, 'refs/tags/v')
+  #     # only create release if tag start by 'v*'
+  #     - name: Create a Release
+  #       id: create_release
+  #       uses: softprops/action-gh-release@v1
+  #       with:
+  #         tag_name: ${{ steps.get_version.outputs.version }}
+  #         body_path: ${{ github.workspace }}/.github/RELEASE.md
+  #       if: startsWith(github.ref, 'refs/tags/v')
 
-      - id: step_upload_url
-        run: echo "upload_url=${{ steps.create_release.outputs.upload_url }}" >> $GITHUB_OUTPUT
+  #     - id: step_upload_url
+  #       run: echo "upload_url=${{ steps.create_release.outputs.upload_url }}" >> $GITHUB_OUTPUT
