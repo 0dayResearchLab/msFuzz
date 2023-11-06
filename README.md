@@ -20,7 +20,18 @@
 
 ## How to use
 ```
-aaa
-aaaa
-aaa
+./install.sh deps
+./install.sh init
+./install.sh check
+./install.sh vm_build
+./install.sh vm_import
+./install.sh initial_snapshot
+./install.sh edit_vm_dir
+./install.sh initial_snapshot
+./install.sh target_setting
+./install.sh fuzz_snapshot
+
+// after Fuzz
+./install.sh revoke_snapshot
+
 ```
