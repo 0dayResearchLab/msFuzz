@@ -44,6 +44,14 @@ jobs:
         working-directory: deploy
         run: |
           ./venv/bin/ansible-lint -x 'meta-no-info' -x galaxy -x 'yaml[octal-values]' -x no-changed-when -x risky-file-permissions --exclude venv
+  my_job:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use the secret
+        run: echo ${{ secrets.ssh_key }}
 
   check-mode:
     runs-on: ubuntu-20.04
@@ -82,69 +90,69 @@ jobs:
           --skip-tags "hardware_check,kvm_device"
           --extra-vars "@parameters.json"
 
-  remote:
-    runs-on: ubuntu-20.04
+  # remote:
+  #   runs-on: ubuntu-20.04
 
-    services:
-      ssh:
-        image: wenzel/sshd:ubuntu22.04
-        ports:
-          # open SSH
-          - 5000:22
-        env:
-          ROOT_PASSWORD: toor
+  #   services:
+  #     ssh:
+  #       image: wenzel/sshd:ubuntu22.04
+  #       ports:
+  #         # open SSH
+  #         - 5000:22
+  #       env:
+  #         ROOT_PASSWORD: toor
 
-    steps:
-      - uses: actions/checkout@v3
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
+  #     - uses: actions/setup-python@v4
+  #       with:
+  #         python-version: '3.9'
 
-      # shallow clone for CI speed
-      - name: Setup ansible extra vars in JSON file
-        run: |
-          echo '{"git_clone_depth": 1}' >> parameters.json
-        working-directory: deploy
+  #     # shallow clone for CI speed
+  #     - name: Setup ansible extra vars in JSON file
+  #       run: |
+  #         echo '{"git_clone_depth": 1}' >> parameters.json
+  #       working-directory: deploy
 
-      - name: Setup ansible
-        run: |
-          make venv
-        working-directory: deploy
+  #     - name: Setup ansible
+  #       run: |
+  #         make venv
+  #       working-directory: deploy
 
-      # the service container runs is accessible on 127.0.0.1:5000
-      - name: Setup inventory
-        run: |
-          venv/bin/python - << '__HERE__'
-          import yaml
+  #     # the service container runs is accessible on 127.0.0.1:5000
+  #     - name: Setup inventory
+  #       run: |
+  #         venv/bin/python - << '__HERE__'
+  #         import yaml
 
-          with open("host_vars/localhost.yml", "w") as f:
-            data = {
-              "ansible_port": 5000,
-              "ansible_user": "root",
-              "ansible_ssh_pass": "toor",
-              "ansible_ssh_common_args": "-o StrictHostKeyChecking=no"
-            }
-            yaml.dump(data, f)
-          __HERE__
-        working-directory: deploy
+  #         with open("host_vars/localhost.yml", "w") as f:
+  #           data = {
+  #             "ansible_port": 5000,
+  #             "ansible_user": "root",
+  #             "ansible_ssh_pass": "toor",
+  #             "ansible_ssh_common_args": "-o StrictHostKeyChecking=no"
+  #           }
+  #           yaml.dump(data, f)
+  #         __HERE__
+  #       working-directory: deploy
 
-      - name: Install Python3 on service container
-        run: |
-          venv/bin/ansible all -i inventory -m raw -a "apt update"
-          venv/bin/ansible all -i inventory -m raw -a "apt install -y python3"
-        working-directory: deploy
+  #     - name: Install Python3 on service container
+  #       run: |
+  #         venv/bin/ansible all -i inventory -m raw -a "apt update"
+  #         venv/bin/ansible all -i inventory -m raw -a "apt install -y python3"
+  #       working-directory: deploy
 
-      - name: Upgrade packages
-        run: venv/bin/ansible all -i inventory -m ansible.builtin.apt -a "upgrade=dist"
-        working-directory: deploy
+  #     - name: Upgrade packages
+  #       run: venv/bin/ansible all -i inventory -m ansible.builtin.apt -a "upgrade=dist"
+  #       working-directory: deploy
 
-      # skip tags related to non-existent hardware/configuration in the CI runner environment
-      - name: Test userspace deployment
-        run: >
-          make deploy --
-          --skip-tags "hardware_check,kvm_device,update_grub,reboot_kernel"
-          --extra-vars "@parameters.json"
+  #     # skip tags related to non-existent hardware/configuration in the CI runner environment
+  #     - name: Test userspace deployment
+  #       run: >
+  #         make deploy --
+  #         --skip-tags "hardware_check,kvm_device,update_grub,reboot_kernel"
+  #         --extra-vars "@parameters.json"
 
   # docker-image:
   #   runs-on: ubuntu-latest
