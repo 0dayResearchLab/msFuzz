@@ -1,0 +1,97 @@
+
+name: CI
+
+on:
+  push:
+    branches:
+      - 'master'
+    tags:
+      - '*'
+    paths-ignore:
+      - '**/README.md'
+      - '.github/RELEASE.md'
+      - 'docs'
+  pull_request:
+    paths-ignore:
+      - '**/README.md'
+      - '.github/RELEASE.md'
+      - 'docs'
+
+env:
+  image_name: intellabs/kafl
+
+jobs:
+  ansible-lint:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: Setup ansible venv
+        working-directory: deploy
+        run: |
+          make venv
+
+      - name: Install ansible-lint
+        working-directory: deploy
+        run: |
+          ./venv/bin/pip install wheel
+          ./venv/bin/pip install ansible-lint==6.16.0
+
+      # ignore 'meta-no-info', since we don't need to publish our roles to Ansible Galaxy
+      - name: Run ansible-lint
+        working-directory: deploy
+        run: |
+          ./venv/bin/ansible-lint -x 'meta-no-info' -x galaxy -x 'yaml[octal-values]' -x no-changed-when -x risky-file-permissions --exclude venv
+  my_job:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup SSH Agent
+        run: |
+          eval `ssh-agent -s`
+          ssh-add - <<< '${{ secrets.PRIVATE_SSH_KEY }}'
+        env:
+          SSH_AUTH_SOCK: ${{ steps.setup-ssh-agent.outputs.ssh-auth-sock }}
+
+  check-mode:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Run deployment in check mode (dry-run)
+        run: make deploy -- --check
+
+  local:
+    strategy:
+        matrix:
+            os: [ubuntu-20.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      # shallow clone for CI speed
+      - name: Setup ansible extra vars in JSON file
+        run: |
+          echo '{"git_clone_depth": 1}' >> parameters.json
+        working-directory: deploy
+
+      # skip tags related to non-existent hardware/configuration in the CI runner environment
+      - name: Test userspace deployment
+        run: > 
+          make deploy --
+          --skip-tags "hardware_check,kvm_device"
+          --extra-vars "@parameters.json"
+
