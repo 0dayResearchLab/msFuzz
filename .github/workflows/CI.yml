@@ -1,4 +1,3 @@
-
 name: CI
 
 on:
@@ -45,31 +44,38 @@ jobs:
         working-directory: deploy
         run: |
           ./venv/bin/ansible-lint -x 'meta-no-info' -x galaxy -x 'yaml[octal-values]' -x no-changed-when -x risky-file-permissions --exclude venv
-  my_job:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
 
-      - name: Setup SSH Agent
-        run: |
-          eval `ssh-agent -s`
-          ssh-add - <<< '${{ secrets.PRIVATE_SSH_KEY }}'
-        env:
-          SSH_AUTH_SOCK: ${{ steps.setup-ssh-agent.outputs.ssh-auth-sock }}
-          
-      - uses: actions/checkout@v3
-            # Make sure the @v0.8.0 matches the current version of the action
-      - uses: webfactory/ssh-agent@v0.8.0
-        with:
-          ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY }}
-
-  
   check-mode:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
+      - name: clone gatsby-blog
+        uses: actions/checkout@master
+        with:
+          path: 'static-site-generator'
 
+      - name: git config
+        env:
+          USER_NAME: ${{ github.event.pusher.name }}
+          USER_EMAIL: ${{ github.event.pusher.email }}
+        run: |
+          git config --global user.email "$USER_EMAIL"
+          git config --global user.name "$USER_NAME"
+
+      - name: make deploy keys
+        env:
+          GH_ACTION_DEPLOY_KEY: ${{ secrets.GH_ACTION_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$GH_ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: clone static_site_repo
+        run: |
+          cd ..
+          git clone git@github.com:0dayResearchLab/kAFL.git static_site_repo
+          ls -al
       - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
@@ -95,10 +101,36 @@ jobs:
           echo '{"git_clone_depth": 1}' >> parameters.json
         working-directory: deploy
 
+      # - name: clone gatsby-blog
+      #   uses: actions/checkout@master
+      #   with:
+      #     path: 'static-site-generator'
+
+      - name: git config
+        env:
+          USER_NAME: ${{ github.event.pusher.name }}
+          USER_EMAIL: ${{ github.event.pusher.email }}
+        run: |
+          git config --global user.email "$USER_EMAIL"
+          git config --global user.name "$USER_NAME"
+
+      - name: make deploy keys
+        env:
+          GH_ACTION_DEPLOY_KEY: ${{ secrets.GH_ACTION_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$GH_ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: clone static_site_repo
+        run: |
+          cd ..
+          git clone git@github.com:0dayResearchLab/kAFL.git static_site_repo
+          ls -al
       # skip tags related to non-existent hardware/configuration in the CI runner environment
       - name: Test userspace deployment
         run: > 
           make deploy --
           --skip-tags "hardware_check,kvm_device"
           --extra-vars "@parameters.json"
-
