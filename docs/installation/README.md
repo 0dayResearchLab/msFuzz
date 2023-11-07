@@ -6,6 +6,7 @@
 CPU : Intel i-7 12700K
 RAM : 84G
 GPU : Nvidia Geforce 1060 super
+OS : Ubuntu 20.04.6 LTS
 ```
 
 # 1. Install dependencies
