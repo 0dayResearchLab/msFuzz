@@ -123,11 +123,11 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-      - name: clone static_site_repo
-        run: |
-          cd ..
-          git clone git@github.com:0dayResearchLab/kAFL.git static_site_repo
-          ls -al
+      # - name: clone static_site_repo
+      #   run: |
+      #     cd ..
+      #     git clone git@github.com:0dayResearchLab/kAFL.git static_site_repo
+      #     ls -al
       # skip tags related to non-existent hardware/configuration in the CI runner environment
       - name: Test userspace deployment
         run: > 
