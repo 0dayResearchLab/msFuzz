@@ -1,26 +1,8 @@
 - name: Install required packages
   ansible.builtin.apt:
     # required for lddtree
-    name: 
-      - pax-utils
-      - qemu
-      - qemu-kvm
-      - libvirt-clients
-      - libvirt-daemon-system
-      - virtinst
-      - bridge-utils
-    state: present
+    name: pax-utils
   become: true
-  tags:
-    - virtualization_packages
-
-- name: Enable and start libvirtd service
-  ansible.builtin.systemd:
-    name: libvirtd
-    enabled: yes
-    state: started
-  tags:
-    - libvirtd_service
 
 - name: Clone required submodules
   ansible.builtin.command: >-
