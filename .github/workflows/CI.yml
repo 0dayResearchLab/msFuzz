@@ -15,6 +15,9 @@ on:
       - '**/README.md'
       - '.github/RELEASE.md'
       - 'docs'
+  schedule:
+    - cron: 0 0 * * *
+
 
 env:
   image_name: intellabs/kafl
