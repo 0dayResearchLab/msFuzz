@@ -80,7 +80,6 @@
 
 - name: Install required for init
   ansible.builtin.apt:
-    # https://askubuntu.com/questions/1225216/failed-to-connect-socket-to-var-run-libvirt-libvirt-sock
     name: 
       - pax-utils
       - qemu
