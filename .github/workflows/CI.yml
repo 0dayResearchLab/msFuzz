@@ -57,7 +57,14 @@ jobs:
           ssh-add - <<< '${{ secrets.PRIVATE_SSH_KEY }}'
         env:
           SSH_AUTH_SOCK: ${{ steps.setup-ssh-agent.outputs.ssh-auth-sock }}
+          
+      - uses: actions/checkout@v3
+            # Make sure the @v0.8.0 matches the current version of the action
+      - uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY }}
 
+  
   check-mode:
     runs-on: ubuntu-20.04
     steps:
