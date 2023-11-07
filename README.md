@@ -19,19 +19,4 @@
   tested for recent Ubuntu 20.04.6 LTS.
 
 ## How to use
-```
-./install.sh deps
-./install.sh init
-./install.sh check
-./install.sh vm_build
-./install.sh vm_import
-./install.sh initial_snapshot
-./install.sh edit_vm_dir
-./install.sh initial_snapshot
-./install.sh target_setting
-./install.sh fuzz_snapshot
-
-// after Fuzz
-./install.sh revoke_snapshot
-
-```
+- [_How to use_](docs/installation/README.md)
