@@ -68,7 +68,7 @@ cp ../../fuzzer/Utils/Harness_for_nyx.sys ./bin/driver
 
 1.1 make snapshot -> 스냅샷 생성
 
-1. vi src/driver/vuln_test.c -> 하네스에서 Symbolic Link Name과 target sys를 바꿈
+1.2 vi src/driver/vuln_test.c -> 하네스에서 Symbolic Link Name과 target sys를 바꿈
 
 2.a
     make target -> bin/driver경로에 target.sys 드라이버를 자동으로 로드시킴
@@ -77,5 +77,10 @@ cp ../../fuzzer/Utils/Harness_for_nyx.sys ./bin/driver
 
 3. make init -> Fuzzing용 snapshot생성
 
-4. make revoke -> 복귀지점으로 복귀
+4. ./run.sh
+
+5. make revoke -> 복귀지점으로 복귀
 ```
+
+
+![Fuzz Success](process_structure.png?raw=true)
