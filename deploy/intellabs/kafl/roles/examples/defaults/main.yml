@@ -1,4 +1,4 @@
-examples_url: git@github.com:0dayResearchLab/kafl.targets2.git
+examples_url: git@github.com:0dayResearchLab/kafl.targets.git
 examples_root: "{{ kafl_install_root }}/examples"
 
 dvkm_sub_path: linux-user/dvkm/Damn_Vulnerable_Kernel_Module
