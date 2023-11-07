@@ -63,6 +63,8 @@ make init
 cd ~/kAFL
 make env
 cd kafl/examples/windows_x86_64/
+mkdir -p bin/driver 
+cp ../../fuzzer/Utils/Harness_for_nyx.sys ./bin/driver
 
 1. make snapshot -> 스냅샷 생성
 
