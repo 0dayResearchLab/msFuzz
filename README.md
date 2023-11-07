@@ -6,7 +6,7 @@
 - The **MS Fuzzer** follows an AFL-like design and can detect semi-stateful bugs.
 - **MS Fuzzer** is a well-designed fuzzer based on [_Nyx-Fuzzer_](https://nyx-fuzz.com) / [_kAFL_](https://github.com/IntelLabs/kAFL) and [_Redqueen_](https://github.com/RUB-SysSec/redqueen).
 - Designed to find bugs for windows Driver that interact with user using **DeviceIoControl**.
-
+![Fuzz Success](docs/installation/fuzz_overall.png?raw=true)
 ## Requirements
 
 - **Intel Skylake or later:** The setup requires a Gen-6 or newer Intel CPU (for

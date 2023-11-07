@@ -1,6 +1,6 @@
 ## How to use
 
-# 0. Test Environment
+# 0. Tested Environment
 ----------------------------------
 ```
 CPU : Intel i-7 12700K
