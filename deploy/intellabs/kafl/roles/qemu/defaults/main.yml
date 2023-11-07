@@ -1,5 +1,5 @@
 # qemu_url: 'https://github.com/0dayResearchLab/QEMU-PT-0.7'
-qemu_url: 'git@github.com:0dayResearchLab/QEMU-PT-0.7.git'
+qemu_url: 'git@github.com:0dayResearchLab/kafl.qemu.git'
 qemu_revision: 'kafl_stable'
 qemu_root: "{{ kafl_install_root }}/qemu"
 qemu_build_type: "static"
