@@ -1,5 +1,12 @@
 ## How to use
 
+# 0. Test Environment
+----------------------------------
+```
+CPU : Intel i-7 12700K
+RAM : 84G
+GPU : Nvidia Geforce 1060 super
+```
 
 # 1. Install dependencies
 ----------------------------------
@@ -77,11 +84,17 @@ cp ../../fuzzer/Utils/Harness_for_nyx.sys ./bin/driver
 
 3. make init -> Fuzzing용 snapshot생성
 
-4.1 mkdir -p ./seed
-4.2 ./run.sh
+4.1a mkdir -p ./seed
+4.2a ./run.sh
+
+GUI
+cd ~/kAFL
+make env
+cd kafl/examples/windows_x86_64/
+kafl gui -w work
 
 5. make revoke -> 복귀지점으로 복귀
 ```
 
 
-![Fuzz Success](process_structure.png?raw=true)
+![Fuzz Success](fuzzing.png?raw=true)
