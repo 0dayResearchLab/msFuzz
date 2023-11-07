@@ -1,6 +1,19 @@
-## How to use
+# How to use
 
-# 0. Tested Environment
+# Table of Contents
+0. [Tested Environment](#section-0)
+1. [Install dependencies](#section-1)
+2. [Enroll github SSH Keys](#section-2)
+
+3. [Clone this repo & change kernel to 6.0.0-nyx+](#section-3)
+4. [Build the Windows VM Template](#section-4)
+5. [Import the template into Vagrant](#section-5)
+6. [Import into libvirt](#section-6)
+7. [Run Fuzz](#section-7)
+
+
+
+# 0. Tested Environment <a name="section-0"></a>
 ----------------------------------
 ```
 CPU : Intel i-7 12700K
@@ -9,7 +22,7 @@ GPU : Nvidia Geforce 1060 super
 OS : Ubuntu 20.04.6 LTS
 ```
 
-# 1. Install dependencies
+# 1. Install dependencies <a name="section-1"></a>
 ----------------------------------
 ```
 sudo apt-get update -y
@@ -17,7 +30,7 @@ sudo apt-get install gcc git make curl vim python3 python3.8-venv -y
 ```
 
 
-# 2. Enroll github SSH Keys
+# 2. Enroll github SSH Keys <a name="section-2"></a>
 ----------------------------------
 ```
 $ ssh-keygen -t rsa -C <example@example.com>
@@ -30,7 +43,7 @@ put this string to github -> profile -> settings -> SSH and GPG Keys -> New SSH 
 
 
 
-# 3. Clone this repo & change kernel to 6.0.0-nyx+
+# 3. Clone this repo & change kernel to 6.0.0-nyx+ <a name="section-3"></a>
 ----------------------------------
 ```
 cd ~
@@ -40,7 +53,7 @@ make deploy
 reboot
 ```
 
-# 4. Build the Windows VM Template
+# 4. Build the Windows VM Template <a name="section-4"></a>
 ----------------------------------
 ```
 cd ~/kAFL
@@ -50,14 +63,14 @@ make build
 ```
 
 
-# 5. Import the template into Vagrant
+# 5. Import the template into Vagrant <a name="section-5"></a>
 ----------------------------------
 ```
 make import
 ```
 
 
-# 6. Import into libvirt
+# 6. Import into libvirt <a name="section-6"></a>
 ----------------------------------
 ```
 cd ../../windows_x86_64
@@ -65,7 +78,7 @@ make init
 ```
 
 
-# 7. Run Fuzz
+# 7. Run Fuzz <a name="section-7"></a>
 ----------------------------------
 ```
 cd ~/kAFL
