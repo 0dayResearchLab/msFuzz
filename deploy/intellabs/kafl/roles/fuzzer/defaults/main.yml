@@ -8,6 +8,7 @@ install_nyx_packer: false
 libxdc_root: "{{ kafl_install_root }}/libxdc"
 capstone_root: "{{ kafl_install_root }}/capstone"
 
-fuzzer_url: 'https://github.com/0dayResearchLab/my-kAFL-0.7v'
+#fuzzer_url: 'https://github.com/0dayResearchLab/my-kAFL-0.7v'
+fuzzer_url: 'git@github.com:0dayResearchLab/my-kAFL-0.7v.git'
 fuzzer_root: "{{ kafl_install_root }}/fuzzer"
 fuzzer_venv_root: "{{ kafl_install_root }}/.venv"
