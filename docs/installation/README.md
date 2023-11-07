@@ -66,7 +66,9 @@ cd kafl/examples/windows_x86_64/
 mkdir -p bin/driver 
 cp ../../fuzzer/Utils/Harness_for_nyx.sys ./bin/driver
 
-1. make snapshot -> 스냅샷 생성
+1.1 make snapshot -> 스냅샷 생성
+
+1. vi src/driver/vuln_test.c -> 하네스에서 Symbolic Link Name과 target sys를 바꿈
 
 2.a
     make target -> bin/driver경로에 target.sys 드라이버를 자동으로 로드시킴
