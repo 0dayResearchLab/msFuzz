@@ -27,7 +27,7 @@
     depth: "{{ git_clone_depth | default(omit) }}"
     force: "{{ force_clone }}"
     recursive: false
-    accept_hostkey: yes
+    accept_hostkey: true
   tags:
     - clone
 
