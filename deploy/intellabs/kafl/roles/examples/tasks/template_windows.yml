@@ -77,10 +77,9 @@
     mode: 'u+s'
   become: true
 
-
+# https://askubuntu.com/questions/1225216/failed-to-connect-socket-to-var-run-libvirt-libvirt-sock
 - name: Install required for init
-  ansible.builtin.apt:
-    # https://askubuntu.com/questions/1225216/failed-to-connect-socket-to-var-run-libvirt-libvirt-sock
+  ansible.builtin.apt:  
     name: 
       - pax-utils
       - qemu
