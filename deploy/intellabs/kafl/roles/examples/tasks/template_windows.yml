@@ -80,7 +80,6 @@
 
 - name: Install required for init
   ansible.builtin.apt:
-    name: 
       - pax-utils
       - qemu
       - qemu-kvm
