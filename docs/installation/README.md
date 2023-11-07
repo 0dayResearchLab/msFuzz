@@ -77,7 +77,8 @@ cp ../../fuzzer/Utils/Harness_for_nyx.sys ./bin/driver
 
 3. make init -> Fuzzing용 snapshot생성
 
-4. ./run.sh
+4.1 mkdir -p ./seed
+4.2 ./run.sh
 
 5. make revoke -> 복귀지점으로 복귀
 ```
