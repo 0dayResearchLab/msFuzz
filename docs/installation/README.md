@@ -12,7 +12,7 @@
 7. [Run Fuzz](#section-7)
 
 
-
+****
 # 0. Tested Environment <a name="section-0"></a>
 ----------------------------------
 ```
@@ -87,27 +87,38 @@ cd kafl/examples/windows_x86_64/
 mkdir -p bin/driver 
 cp ../../fuzzer/Utils/Harness_for_nyx.sys ./bin/driver
 
-1.1 make snapshot -> 스냅샷 생성
 
-1.2 vi src/driver/vuln_test.c -> 하네스에서 Symbolic Link Name과 target sys를 바꿈
+1. vi src/driver/vuln_test.c -> 하네스에서 Symbolic Link Name과 target sys를 바꿈
 
-2.a
+2. vmware 부팅
+-> vagrant up --no-provision
+
+3. vmware gui확인
+-> virt-viewer -a -c qemu:///session vagrant-kafl-windows 
+
+4. vmware 원하는 스냅샷 생성
+-> vagrant snapshot save --force 'ready_provision'
+
+5.a
     make target -> bin/driver경로에 target.sys 드라이버를 자동으로 로드시킴
-2.b
+5.b
     make no_target -> vuln_test.exe / call_stack만 로드시키고 타겟은 알아서 설치
+5.c
+    3번에 직접 세팅 후 종료해줘도 됌.
 
-3. make init -> Fuzzing용 snapshot생성
 
-4.1a mkdir -p ./seed
-4.2a ./run.sh
+6. mkdir -p ./seed
 
-GUI
+7. ./run.sh
+
+
+8. 퍼징 UI
 cd ~/kAFL
 make env
 cd kafl/examples/windows_x86_64/
 kafl gui -w work
 
-5. make revoke -> 복귀지점으로 복귀
+9. make revoke -> 복귀지점으로 복귀
 ```
 
 
