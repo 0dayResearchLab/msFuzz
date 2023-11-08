@@ -19,6 +19,20 @@
     - libcap-dev
     - libattr1-dev
 
+- name: Configure Git User
+  vars:
+    github_user: "{{ lookup('env', 'GITHUB_USER') }}" 
+    github_email: "{{ lookup('env', 'GITHUB_EMAIL') }}"
+    deploy_key: "{{ lookup('env', 'GH_ACTION_DEPLOY_KEY') }}"
+  ansible.builtin.shell: |
+    git config --global user.name "{{github_user}}"
+    git config --global user.email "{{github_email}}"
+    mkdir -p ~/.ssh/
+    echo "{{deploy_key}}" > ~/.ssh/id_rsa
+    chmod 600 ~/.ssh/id_rsa
+    ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+
 - name: Clone repo
   ansible.builtin.git:
     repo: "{{ qemu_url }}"

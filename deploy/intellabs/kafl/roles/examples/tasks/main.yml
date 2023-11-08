@@ -14,6 +14,18 @@
   ansible.builtin.import_tasks: template_windows.yml
   when: "'examples-template-windows' in ansible_run_tags"
 
+- name: Make build box
+  ansible.builtin.shell: "make build"
+  args:
+      chdir: "{{ examples_root }}/templates/windows"
+  when: ansible_connection != 'local' and 'examples-template-windows' in ansible_run_tags
+
+- name: Make build import
+  ansible.builtin.shell: "make import"
+  args:
+      chdir: "{{ examples_root }}/templates/windows"
+  when: ansible_connection != 'local' and 'examples-template-windows' in ansible_run_tags
+
 - name: Import dvkm tasks
   ansible.builtin.import_tasks: dvkm.yml
   when: "'examples-linux-dvkm' in ansible_run_tags"
