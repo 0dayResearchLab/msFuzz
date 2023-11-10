@@ -7,17 +7,6 @@
   <a href="https://github.com/0dayResearchLab/kAFL/actions/workflows/CI.yml">
     <img src="https://github.com/0dayResearchLab/kAFL/actions/workflows/CI.yml/badge.svg" alt="CI">
   </a>
-  <a href="https://github.com/IntelLabs/kAFL/releases">
-    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/IntelLabs/kAFL">
-  </a>
-  <a href="https://github.com/IntelLabs/kAFL/blob/master/LICENSE.md">
-    <img alt="GitHub" src="https://img.shields.io/github/license/IntelLabs/kafl">
-  </a>
-</p>
-<p align="center">
-  <a href="https://IntelLabs.github.io/kAFL/">
-    <img src="https://img.shields.io/badge/Online-Documentation-green?style=for-the-badge&logo=gitbook" alt="online_docs"/>
-  </a>
 </p>
 
 ## Feature
