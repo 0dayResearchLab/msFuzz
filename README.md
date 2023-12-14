@@ -25,6 +25,9 @@
 
 - **Ubuntu:** The installation and tutorials are
   tested for recent Ubuntu 20.04.6 LTS.
+## Our Achievements
+- 100+ Security Bugs in 100 days
+- 20+ EoP ( Elevation of Privilege )
 
 ## How to use
 - [_How to use_](docs/installation/README.md)
