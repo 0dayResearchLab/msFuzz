@@ -88,23 +88,20 @@ mkdir -p bin/driver
 cp ../../fuzzer/Utils/Harness_for_nyx.sys ./bin/driver
 
 
-1. vi src/driver/vuln_test.c -> 하네스에서 Symbolic Link Name과 target sys를 바꿈
+1. vi src/driver/vuln_test.c -> Change Symbolic Link Name / target sys ( Target Driver Name )
 
-2. vmware 부팅
+2. Qemu Booting
 -> vagrant up --no-provision
 
-3. vmware gui확인
--> virt-viewer -a -c qemu:///session vagrant-kafl-windows 
-
-4. vmware 원하는 스냅샷 생성
+3. Make Qemu Snapshot named 'ready_provision'
 -> vagrant snapshot save --force 'ready_provision'
 
-5.a
-    make target -> bin/driver경로에 target.sys 드라이버를 자동으로 로드시킴
-5.b
-    make no_target -> vuln_test.exe / call_stack만 로드시키고 타겟은 알아서 설치
-5.c
-    3번에 직접 세팅 후 종료해줘도 됌.
+4.a
+    make target -> automatic loading the Driver to Qemu that located in bin/driver/target.sys & bin/driver/vuln_test.exe
+4.b
+    make no_target -> automatic loading the Driver to Qemu that located in vuln_test.exe / call_stack.sys
+4.c
+    make environment yourself
 
 
 6. mkdir -p ./seed
@@ -112,13 +109,13 @@ cp ../../fuzzer/Utils/Harness_for_nyx.sys ./bin/driver
 7. ./run.sh
 
 
-8. 퍼징 UI
+8. Show GUI
 cd ~/kAFL
 make env
 cd kafl/examples/windows_x86_64/
 kafl gui -w work
 
-9. make revoke -> 복귀지점으로 복귀
+9. make revoke -> Revoke the Snapshot from fuzzed to Stage #3 ( 'ready_provison' )
 ```
 
 
