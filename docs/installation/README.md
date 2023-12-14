@@ -47,7 +47,7 @@ put this string to github -> profile -> settings -> SSH and GPG Keys -> New SSH 
 ----------------------------------
 ```
 cd ~
-git clone git@github.com:0dayResearchLab/kAFL.git
+git clone git@github.com:0dayResearchLab/msFuzz.git kAFL
 cd kAFL
 make deploy
 reboot
