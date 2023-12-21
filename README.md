@@ -29,5 +29,8 @@
 - 100+ Security Bugs in 100 days
 - 20+ EoP ( Elevation of Privilege )
 
+## For more Detail
+- [_msFuzz Internal_](https://today-0day.gitbook.io/main/introduction/windows-driver-0-day-research)
+
 ## How to use
 - [_How to use_](docs/installation/README.md)
