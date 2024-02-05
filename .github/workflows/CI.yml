@@ -15,8 +15,6 @@ on:
       - '**/README.md'
       - '.github/RELEASE.md'
       - 'docs'
-  schedule:
-    - cron: 0 0 * * *
 
 
 env:
