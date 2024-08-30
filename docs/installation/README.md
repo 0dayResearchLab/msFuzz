@@ -107,7 +107,8 @@ cp ../../fuzzer/Utils/Harness_for_nyx.sys ./bin/driver
 6. mkdir -p ./seed
 
 7. ./run.sh
-    you can get the result.json file at [_angrPT_](https://github.com/0dayResearchLab/angrPT)
+    you can get the result.json file at angrPT(https://github.com/0dayResearchLab/angrPT)
+    And result.json have the information about the each IoControl Constraint and Global Variable dependencies.
 
 8. Show GUI
 cd ~/kAFL
