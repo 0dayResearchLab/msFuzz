@@ -107,7 +107,7 @@ cp ../../fuzzer/Utils/Harness_for_nyx.sys ./bin/driver
 6. mkdir -p ./seed
 
 7. ./run.sh
-
+    you can get the result.json file at [_angrPT_](https://github.com/0dayResearchLab/angrPT)
 
 8. Show GUI
 cd ~/kAFL
