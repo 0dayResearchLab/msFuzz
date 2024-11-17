@@ -29,8 +29,8 @@
 - 100+ Security Bugs in 100 days
 - 20+ EoP ( Elevation of Privilege )
 
-## For more Detail
-- [_msFuzz Internal_](https://today-0day.gitbook.io/main/introduction/windows-driver-0-day-research)
+## Talks & More Details
+- [_CodeBlue2024_](https://codeblue.jp/en/program/time-table/day2-010/) ([_Slides_](CODEBLUE2024.pdf)) 
 
 ## How to use
 - [_How to use_](docs/installation/README.md)
