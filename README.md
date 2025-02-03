@@ -27,7 +27,7 @@
   tested for recent Ubuntu 20.04.6 LTS.
 ## Our Achievements
 - 100+ Security Bugs in 100 days
-- 20+ EoP ( Elevation of Privilege )
+- 20+ EoP (Elevation of Privilege)
 
 ## Talks & More Details
 - [_CodeBlue2024_](https://codeblue.jp/en/program/time-table/day2-010/) ([_Slides_](CODEBLUE2024.pdf)) 
