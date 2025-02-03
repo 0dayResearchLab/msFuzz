@@ -88,7 +88,7 @@ mkdir -p bin/driver
 cp ../../fuzzer/Utils/Harness_for_nyx.sys ./bin/driver
 
 
-1. vi src/driver/vuln_test.c -> Change Symbolic Link Name / target sys ( Target Driver Name )
+1. vi src/driver/vuln_test.c -> Change Symbolic Link Name / target sys (Target Driver Name)
 
 2. Qemu Booting
 -> vagrant up --no-provision
@@ -116,7 +116,7 @@ make env
 cd kafl/examples/windows_x86_64/
 kafl gui -w work
 
-9. make revoke -> Revoke the Snapshot from fuzzed to Stage #3 ( 'ready_provison' )
+9. make revoke -> Revoke the Snapshot from fuzzed to Stage #3 ('ready_provison')
 ```
 
 
