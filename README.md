@@ -30,7 +30,7 @@
 - 20+ EoP (Elevation of Privilege)
 
 ## Talks & More Details
-- [_CodeBlue2024_](https://codeblue.jp/en/program/time-table/day2-010/) ([_Slides_](CODEBLUE2024.pdf)) 
+- [_CodeBlue2024_](https://note.com/code_blue/n/n994e308f2f26/) [[_Slides_](CODEBLUE2024.pdf)] [[_Video_](https://www.youtube.com/watch?v=90ET7F3-T7I)]
 
 ## How to use
 - [_How to use_](docs/installation/README.md)

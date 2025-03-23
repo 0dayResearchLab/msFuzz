@@ -2,7 +2,7 @@ MIT License
 
 Copyright (c) 2023 Intel Labs
 
-Copyright (c) 2024 Sangjun (best_collin@naver.com)
+Copyright (c) 2025 Sangjun (sangjuns@kaist.ac.kr)
 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
