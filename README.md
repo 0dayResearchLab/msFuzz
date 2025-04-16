@@ -1,7 +1,5 @@
 # msFuzz
-**msFuzz** is a coverage-guided fuzzer for Windows kernel drivers using Intel PT.
-It is constraint- and dependency-aware for efficient path exploration.
-
+**msFuzz** is a coverage-guided fuzzer for Windows kernel drivers that utilizes Intel PT and leverages constraint and dependency analysis to guide fuzzing.
 
 <p align="center">
   <a href="https://github.com/0dayResearchLab/kAFL/actions/workflows/CI.yml">
