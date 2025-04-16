@@ -1,6 +1,6 @@
-# MS Fuzz
-**MS Fuzzer** is coverage-guided Fuzzer that is targeting Windows Kernel Driver.
-
+# msFuzz
+**msFuzz** is a coverage-guided fuzzer for Windows kernel drivers using Intel PT.
+It is constraint- and dependency-aware for efficient path exploration.
 
 
 <p align="center">
@@ -10,9 +10,9 @@
 </p>
 
 ## Feature
-- **MS Fuzzer** uses [_Intel PT_](https://www.intel.com/content/www/us/en/developer/videos/collecting-processor-trace-in-intel-system-debugger.html) to achieve code coverage. 
-- The **MS Fuzzer** follows an AFL-like design and can detect semi-stateful bugs.
-- **MS Fuzzer** is a well-designed fuzzer based on [_Nyx-Fuzzer_](https://nyx-fuzz.com)/[_kAFL_](https://github.com/IntelLabs/kAFL) and [_Redqueen_](https://github.com/RUB-SysSec/redqueen).
+- **msFuzz** uses [_Intel PT_](https://www.intel.com/content/www/us/en/developer/videos/collecting-processor-trace-in-intel-system-debugger.html) to achieve code coverage. 
+- The **msFuzz** follows an AFL-like design and can detect semi-stateful bugs.
+- **msFuzz** is a well-designed fuzzer based on [_Nyx-Fuzzer_](https://nyx-fuzz.com)/[_kAFL_](https://github.com/IntelLabs/kAFL) and [_Redqueen_](https://github.com/RUB-SysSec/redqueen).
 - Designed to find bugs for windows Driver that interact with user using **DeviceIoControl**.
 ![Fuzz Success](docs/installation/fuzz_overall.png?raw=true)
 ## Requirements
@@ -28,9 +28,6 @@
 ## Our Achievements
 - 100+ Security Bugs in 100 days
 - 20+ EoP (Elevation of Privilege)
-
-## Talks & More Details
-- [_CodeBlue2024_](https://note.com/code_blue/n/n994e308f2f26/) [[_Slides_](CODEBLUE2024.pdf)] [[_Video_](https://www.youtube.com/watch?v=90ET7F3-T7I)]
 
 ## How to use
 - [_How to use_](docs/installation/README.md)
