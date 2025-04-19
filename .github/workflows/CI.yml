@@ -16,19 +16,15 @@ on:
       - '.github/RELEASE.md'
       - 'docs'
 
-
-env:
-  image_name: intellabs/kafl
-
 jobs:
   ansible-lint:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.9'
-          
+
       - name: Setup ansible venv
         working-directory: deploy
         run: |
@@ -47,37 +43,11 @@ jobs:
           ./venv/bin/ansible-lint -x 'meta-no-info' -x galaxy -x 'yaml[octal-values]' -x no-changed-when -x risky-file-permissions --exclude venv
 
   check-mode:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
-      - name: clone gatsby-blog
-        uses: actions/checkout@master
-        with:
-          path: 'static-site-generator'
+      - uses: actions/checkout@v4
 
-      - name: git config
-        env:
-          USER_NAME: ${{ github.event.pusher.name }}
-          USER_EMAIL: ${{ github.event.pusher.email }}
-        run: |
-          git config --global user.email "$USER_EMAIL"
-          git config --global user.name "$USER_NAME"
-
-      - name: make deploy keys
-        env:
-          GH_ACTION_DEPLOY_KEY: ${{ secrets.GH_ACTION_DEPLOY_KEY }}
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$GH_ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-      - name: clone static_site_repo
-        run: |
-          cd ..
-          git clone git@github.com:0dayResearchLab/kAFL.git static_site_repo
-          ls -al
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.9'
 
@@ -87,14 +57,10 @@ jobs:
   local:
     strategy:
         matrix:
-            os: [ubuntu-20.04]
+            os: [ubuntu-22.04]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
+      - uses: actions/checkout@v4
 
       # shallow clone for CI speed
       - name: Setup ansible extra vars in JSON file
@@ -102,33 +68,6 @@ jobs:
           echo '{"git_clone_depth": 1}' >> parameters.json
         working-directory: deploy
 
-      # - name: clone gatsby-blog
-      #   uses: actions/checkout@master
-      #   with:
-      #     path: 'static-site-generator'
-
-      - name: git config
-        env:
-          USER_NAME: ${{ github.event.pusher.name }}
-          USER_EMAIL: ${{ github.event.pusher.email }}
-        run: |
-          git config --global user.email "$USER_EMAIL"
-          git config --global user.name "$USER_NAME"
-
-      - name: make deploy keys
-        env:
-          GH_ACTION_DEPLOY_KEY: ${{ secrets.GH_ACTION_DEPLOY_KEY }}
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$GH_ACTION_DEPLOY_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-      # - name: clone static_site_repo
-      #   run: |
-      #     cd ..
-      #     git clone git@github.com:0dayResearchLab/kAFL.git static_site_repo
-      #     ls -al
       # skip tags related to non-existent hardware/configuration in the CI runner environment
       - name: Test userspace deployment
         run: > 

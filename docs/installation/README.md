@@ -3,13 +3,11 @@
 # Table of Contents
 0. [Tested Environment](#section-0)
 1. [Install dependencies](#section-1)
-2. [Enroll github SSH Keys](#section-2)
-
-3. [Clone this repo & change kernel to 6.0.0-nyx+](#section-3)
-4. [Build the Windows VM Template](#section-4)
-5. [Import the template into Vagrant](#section-5)
-6. [Import into libvirt](#section-6)
-7. [Run Fuzz](#section-7)
+2. [Clone this repo & change kernel to 6.0.0-nyx+](#section-2)
+3. [Build the Windows VM Template](#section-3)
+4. [Import the template into Vagrant](#section-4)
+5. [Import into libvirt](#section-5)
+6. [Run Fuzz](#section-6)
 
 
 ****
@@ -29,31 +27,17 @@ sudo apt-get update -y
 sudo apt-get install gcc git make curl vim python3 python3.8-venv -y
 ```
 
-
-# 2. Enroll github SSH Keys <a name="section-2"></a>
-----------------------------------
-```
-$ ssh-keygen -t rsa -C <example@example.com>
-
-$ cat .ssh/id_rsa.pub
-ssh-rsa AAAAB3Nz...
-
-put this string to github -> profile -> settings -> SSH and GPG Keys -> New SSH key
-```
-
-
-
-# 3. Clone this repo & change kernel to 6.0.0-nyx+ <a name="section-3"></a>
+# 2. Clone this repo & change kernel to 6.0.0-nyx+ <a name="section-2"></a>
 ----------------------------------
 ```
 cd ~
-git clone git@github.com:0dayResearchLab/msFuzz.git kAFL
+git clone https://github.com/0dayResearchLab/msFuzz.git kAFL
 cd kAFL
 make deploy
 reboot
 ```
 
-# 4. Build the Windows VM Template <a name="section-4"></a>
+# 3. Build the Windows VM Template <a name="section-3"></a>
 ----------------------------------
 ```
 cd ~/kAFL
@@ -63,14 +47,14 @@ make build
 ```
 
 
-# 5. Import the template into Vagrant <a name="section-5"></a>
+# 4. Import the template into Vagrant <a name="section-4"></a>
 ----------------------------------
 ```
 make import
 ```
 
 
-# 6. Import into libvirt <a name="section-6"></a>
+# 5. Import into libvirt <a name="section-5"></a>
 ----------------------------------
 ```
 cd ../../windows_x86_64
@@ -78,7 +62,7 @@ make init
 ```
 
 
-# 7. Run Fuzz <a name="section-7"></a>
+# 6. Run Fuzz <a name="section-6"></a>
 ----------------------------------
 ```
 cd ~/kAFL
