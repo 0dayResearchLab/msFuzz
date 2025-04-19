@@ -45,6 +45,7 @@
         executable: /bin/bash
       register: grub_menuentry_ids
       when: true
+      become: true
       check_mode: false
 
     - name: Update /etc/default/grub

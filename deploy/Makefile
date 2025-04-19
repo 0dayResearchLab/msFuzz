@@ -44,6 +44,15 @@ venv: venv/bin/ansible-galaxy
 venv/bin/ansible-galaxy:
 	python3 -m venv venv
 	venv/bin/pip install wheel
+	UBUNTU_VERSION=$$(lsb_release -rs); \
+	if [ "$$UBUNTU_VERSION" = "20.04" ]; then \
+		ANSIBLE_VERSION="6.7.0"; \
+	else \
+		ANSIBLE_VERSION="8.5.0"; \
+	fi; \
+	echo "[*] Ubuntu version: $$UBUNTU_VERSION → ansible==$$ANSIBLE_VERSION"; \
+	sed -i "s/^\(ansible==\).*/\1$${ANSIBLE_VERSION}/" requirements.txt
+
 	venv/bin/pip install -r requirements.txt
 
 clean:

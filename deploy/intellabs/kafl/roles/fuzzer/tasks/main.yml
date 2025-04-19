@@ -32,7 +32,6 @@
     virtualenv: "{{ fuzzer_venv_root }}"
     virtualenv_command: "python3 -m venv"
   changed_when: true
-  when: not ansible_check_mode
   tags:
     - build
 
