@@ -16,6 +16,8 @@ on:
       - '**/README.md'
       - '.github/RELEASE.md'
       - 'docs'
+  schedule:
+    - cron: '0 3 * * *'
 
 jobs:
   ansible-lint:
