@@ -72,7 +72,12 @@ mkdir -p bin/driver
 cp ../../fuzzer/Utils/Harness_for_nyx.sys ./bin/driver
 
 
-1. vi src/driver/vuln_test.c -> Change Symbolic Link Name / target sys (Target Driver Name)
+1. Edit src/driver/vuln_test.c
+-> Change macro definitions of "VULN_DRIVER_NAME", "VULN_DRIVER_NAME2", "VULN_DRIVER_NAME3" to your target driver
+-> Then update the "CreateFile()" call (around line 232) to use one of:
+   - Symbolic link: "\\\\.\\MyDriverDevice"
+   - NT namespace: "\\\\?\\GLOBALROOT\\Device\\MyDriverDevice"
+   - PnP interface: "\\\\?\\USB#VID_…#{GUID}…"
 
 2. Qemu Booting
 -> vagrant up --no-provision
