@@ -92,9 +92,6 @@ cp ../../fuzzer/Utils/Harness_for_nyx.sys ./bin/driver
    - make no_target
      Copies **only** the harness executable (`vuln_test.exe`) into the VM and loads it, no test driver is deployed.
 
-   - make environment
-     Skips the built‑in WinRM scripts. Use this if you prefer to configure the QEMU/WinRM environment manually.
-
 
 6. mkdir -p ./seed
 
