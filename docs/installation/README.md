@@ -113,14 +113,20 @@ kafl gui -w work
 
 # 7. How to reproduce bugs <a name="section-7"></a>
 ----------------------------------
-kAFL includes a replay utility to rerun a specific payload against your driver:
+kAFL includes a replay utility to rerun a specific payload against your driver.
+`replay.cpp` uses the Windows API (`CreateFileW`, `DeviceIoControl`), therefore it has to be
+built as a Windows binary and executed inside the Windows guest, not on the Linux host:
 
 ```bash
-# Build and run the replay tool
-cd $kAFL/docs/installation
-[you compiler] replay.cpp -o replay
+# Install the MinGW-w64 C++ cross-compiler
+sudo apt-get install g++-mingw-w64-x86-64
 
+# Build the replay tool on the host
+cd ~/kAFL/docs/installation
+x86_64-w64-mingw32-g++ replay.cpp -o replay.exe -static
+
+# Copy replay.exe into the guest, then run it there
 # Usage:
-./replay <SymbolicLinkName> <PayloadFile>
+replay.exe <SymbolicLinkName> <PayloadFile>
 ```
 ![Fuzz Success](fuzzing.png?raw=true)

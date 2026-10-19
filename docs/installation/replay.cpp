@@ -7,6 +7,7 @@
 
 char* payload = NULL;
 char* output = NULL;
+DWORD outputSize = 0;
 DWORD byteRead = NULL;
 
 uint32_t u32(unsigned char* data) {
@@ -42,6 +43,11 @@ int wmain(int argc, wchar_t* argv[]) {
 
     payload = (char*)VirtualAlloc(NULL, ((dFileSize + 0x1000 - 1) / 0x1000) * 0x1000, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
     output = (char*)VirtualAlloc(NULL, BUF_SIZE, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+    if (payload == NULL || output == NULL) {
+        printf("Buffer alloc fail..\n");
+        return 0;
+    }
+    outputSize = BUF_SIZE;
 
     if (!ReadFile(hFile, payload, (DWORD)fileSize.QuadPart, &byteRead, NULL) || byteRead != fileSize.QuadPart) {
         printf("File read fail..\n");
@@ -67,11 +73,21 @@ int wmain(int argc, wchar_t* argv[]) {
 
         char* input = &payload[start + 16];
 
+        if (outbuffer_length > outputSize) {
+            VirtualFree(output, 0, MEM_RELEASE);
+            output = (char*)VirtualAlloc(NULL, outbuffer_length, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+            if (output == NULL) {
+                printf("Output buffer alloc fail..\n");
+                return 0;
+            }
+            outputSize = outbuffer_length;
+        }
+        memset(output, 0, outputSize);
+
         NTSTATUS res = DeviceIoControl(hDriver, ioctl_code, input, inbuffer_length, output, outbuffer_length, &byteRead, 0);
         printf("IOCTL: %lx, inputLen: %lx, outputLen: %lx success: %d\n", ioctl_code & 0xffffffff, inbuffer_length & 0xffffffff, outbuffer_length & 0xffffffff, res);
 
         start = start + inbuffer_length + 16;
-        memset(output, 0, BUF_SIZE);
     }
     
     system("pause");
